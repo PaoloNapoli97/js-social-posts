@@ -55,3 +55,43 @@ const posts = [
         "created": "2021-03-05"
     }
 ];
+
+const postLiked = [];
+
+const postContainer = document.getElementById('container');
+
+for(let i = 0; i < posts.length; i++) {
+    const element = posts[i];
+    // Clona il template del post dall'HTML
+    const template = document.getElementById('post-template').content.cloneNode(true);
+    // Imposto le immagini del profilo
+    template.querySelector('.profile-pic').src = element.author.image;
+    template.querySelector('.profile-pic').alt = element.author.name;
+    // Informazion nome creatore e data creazione
+    template.querySelector('.post-meta__author').innerHTML = element.author.name;
+    template.querySelector('.post-meta__time').innerHTML = new Date(element.created).toDateString();
+    // Posto il contenuno del testo del post
+    template.querySelector('.post__text').innerHTML = element.content;
+    // Immagine del post
+    template.querySelector('.post__image > img').src = element.media;
+
+    // Inizio correzione della mattina
+
+    // Pulsante mi piace
+    template.querySelector('.js-like-button').addEventListener('click', onClick);
+    template.querySelector('.js-like-button').setAttribute('data-postid', element.id);
+    // Numero di mi piace
+    template.querySelector('.js-likes-counter').innerHTML = element.likes;
+    template.querySelector('.js-likes-counter').id = `like-counter-${element.id}`;
+
+    postContainer.append(template);
+}
+
+function onClick(event) {
+    event.preventDefault();
+    this.classList.add('like-button--liked');
+    const postID = this.getAttribute('data-postid');
+    const postLikes = document.querySelector(`#like-counter-${postID}`);
+    postLikes.innerHTML = Number(postLikes.innerHTML) + 1;
+    postLiked.push(element.id);
+}
